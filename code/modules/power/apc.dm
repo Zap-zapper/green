@@ -613,10 +613,7 @@
 			charging = 0
 			src.update_icon()
 		return
-	if(stat & (BROKEN|MAINT))
-		return
-	// do APC interaction
-	src.interact(user)
+	..()
 
 /obj/machinery/power/apc/attack_alien(mob/living/carbon/alien/humanoid/user)
 	if(!user)
@@ -666,9 +663,13 @@
 		return 0 // 0 = User is not a Malf AI
 
 
-/obj/machinery/power/apc/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null)
-	if(!user)
-		return
+/obj/machinery/power/apc/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, \
+										datum/tgui/master_ui = null, datum/ui_state/state = default_state)
+	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
+	if(!ui)
+		ui = new(user, src, ui_key, "apc", name, 535, 515, master_ui, state)
+		ui.open()
+
 
 	var/list/data = list(
 		"locked" = locked,
@@ -716,18 +717,7 @@
 		)
 	)
 
-	// update the ui if it exists, returns null if no ui is passed/found
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data)
-	if (!ui)
-		// the ui does not exist, so we'll create a new() one
-        // for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
-		ui = new(user, src, ui_key, "apc.tmpl", "[area.name] - APC", 520, data["siliconUser"] ? 465 : 420)
-		// when the ui is first opened this is the data it will use
-		ui.set_initial_data(data)
-		// open the new ui window
-		ui.open()
-		// auto update every Master Controller tick
-		ui.set_auto_update(1)
+	return data
 
 /obj/machinery/power/apc/proc/report()
 	return "[area.name] : [equipment]/[lighting]/[environ] ([lastused_equip+lastused_light+lastused_environ]) : [cell? cell.percent() : "N/C"] ([charging])"
@@ -798,90 +788,71 @@
 			user << "<span class='danger'>You momentarily forget how to use [src].</span>"
 			return 0
 	return 1
+/obj/machinery/power/apc/proc/malfhack(mob/living/silicon/ai/malf)
+	if(!istype(malf))
+		return
+	if(get_malf_status(malf) != 1)
+		return
+	if(malf.malfhacking)
+		malf << "You are already hacking an APC."
+		return
+	malf << "Beginning override of APC systems. This takes some time, and you cannot perform other actions during the process."
+	malf.malfhack = src
+	malf.malfhacking = TRUE
+	addtimer(src, "malfhacked", 600, FALSE, malf)
 
-/obj/machinery/power/apc/Topic(href, href_list)
-	if(..())
-		return 0
-
-	if(!can_use(usr, 1))
-		return 0
-
-	if (href_list["lock"])
-		coverlocked = !coverlocked
-
-	else if (href_list["breaker"])
-		toggle_breaker()
-
-	else if (href_list["cmode"])
-		chargemode = !chargemode
-		if(!chargemode)
-			charging = 0
-			update_icon()
-
-	else if (href_list["eqp"])
-		var/val = text2num(href_list["eqp"])
-		equipment = setsubsystem(val)
-		update_icon()
-		update()
-
-	else if (href_list["lgt"])
-		var/val = text2num(href_list["lgt"])
-		lighting = setsubsystem(val)
-		update_icon()
-		update()
-
-	else if (href_list["env"])
-		var/val = text2num(href_list["env"])
-		environ = setsubsystem(val)
-		update_icon()
-		update()
-
-	else if (href_list["overload"])
-		if(usr.has_unlimited_silicon_privilege)
-			src.overload_lighting()
-
-	else if (href_list["malfhack"])
-		var/mob/living/silicon/ai/malfai = usr
-		if(get_malf_status(malfai)==1)
-			if (malfai.malfhacking)
-				malfai << "You are already hacking an APC."
-				return 1
-			malfai << "Beginning override of APC systems. This takes some time, and you cannot perform other actions during the process."
-			malfai.malfhack = src
-			malfai.malfhacking = 1
-			sleep(600)
-			if(src)
-				if (!src.aidisabled)
-					malfai.malfhack = null
-					malfai.malfhacking = 0
-					locked = 1
-					if (ticker.mode.config_tag == "malfunction")
-						if (src.z == ZLEVEL_STATION) //if (is_type_in_list(get_area(src), the_station_areas))
-							ticker.mode:apcs++
-					if(usr:parent)
-						src.malfai = usr:parent
-					else
-						src.malfai = usr
-					malfai << "Hack complete. The APC is now under your exclusive control."
+obj/machinery/power/apc/ui_act(action, params)
+	if(..() || !can_use(usr, 1) || (locked && !usr.has_unlimited_silicon_privilege))
+		return
+	switch(action)
+		if("lock")
+			if(usr.has_unlimited_silicon_privilege)
+				if(emagged || (stat & (BROKEN|MAINT)))
+					usr << "The APC does not respond to the command."
+				else
+					locked = !locked
 					update_icon()
-
-	else if (href_list["occupyapc"])
-		if(get_malf_status(usr))
-			malfoccupy(usr)
-
-	else if (href_list["deoccupyapc"])
-		if(get_malf_status(usr))
-			malfvacate()
-
-	else if (href_list["toggleaccess"])
-		if(usr.has_unlimited_silicon_privilege)
-			if(emagged || (stat & (BROKEN|MAINT)))
-				usr << "The APC does not respond to the command."
-			else
-				locked = !locked
+					. = TRUE
+		if("cover")
+			coverlocked = !coverlocked
+			. = TRUE
+		if("breaker")
+			toggle_breaker()
+			. = TRUE
+		if("charge")
+			chargemode = !chargemode
+			if(!chargemode)
+				charging = 0
 				update_icon()
+			. = TRUE
+		if("channel")
+			if(params["eqp"])
+				equipment = setsubsystem(text2num(params["eqp"]))
+				update_icon()
+				update()
+			else if(params["lgt"])
+				lighting = setsubsystem(text2num(params["lgt"]))
+				update_icon()
+				update()
+			else if(params["env"])
+				environ = setsubsystem(text2num(params["env"]))
+				update_icon()
+				update()
+			. = TRUE
+		if("overload")
+			if(usr.has_unlimited_silicon_privilege)
+				overload_lighting()
+				. = TRUE
+		if("hack")
+			if(get_malf_status(usr))
+				malfhack(usr)
+		if("occupy")
+			if(get_malf_status(usr))
+				malfoccupy(usr)
+		if("deoccupy")
+			if(get_malf_status(usr))
+				malfvacate()
 
-	return 1
 
 /obj/machinery/power/apc/proc/toggle_breaker()
 	operating = !operating

@@ -5,6 +5,8 @@
 	var/name				//name of the subsystem
 	var/priority = 0		//priority affects order of initialization. Higher priorities are initialized first, lower priorities later. Can be decimal and negative values.
 	var/wait = 20			//time to wait (in deciseconds) between each call to fire(). Must be a positive integer.
+	var/display = 100
+
 	var/dynamic_wait = 0	//changes the wait based on the amount of time it took to process
 	var/dwait_upper = 20	//longest wait can be under dynamic_wait
 	var/dwait_lower = 5		//shortest wait can be under dynamic_wait

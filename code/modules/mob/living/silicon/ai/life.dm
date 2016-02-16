@@ -175,3 +175,8 @@
 	health = maxHealth - getOxyLoss() - getToxLoss() - getBruteLoss()
 	if(!fire_res_on_core)
 		health -= getFireLoss()
+
+/mob/living/silicon/ai/proc/lacks_power()
+	var/turf/T = get_turf(src)
+	var/area/A = get_area(src)
+	return !T || !A || ((!A.master.power_equip || istype(T, /turf/space)) && !is_type_in_list(src.loc, list(/obj/item, /obj/mecha)))

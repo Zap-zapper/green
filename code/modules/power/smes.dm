@@ -324,12 +324,17 @@
 	ui_interact(user)
 
 
-/obj/machinery/power/smes/ui_interact(mob/user, ui_key = "main", var/datum/nanoui/ui = null)
-	if(!user)
-		return
+/obj/machinery/power/smes/ui_interact(mob/user, ui_key = "main", datum/tgui/ui = null, force_open = 0, \
+										datum/tgui/master_ui = null, datum/ui_state/state = default_state)
+	ui = SStgui.try_update_ui(user, src, ui_key, ui, force_open)
+	if(!ui)
+		ui = new(user, src, ui_key, "smes", name, 340, 440, master_ui, state)
+		ui.open()
 
+
+/obj/machinery/power/smes/ui_data()
 	var/list/data = list(
-		"capacityPercent" = round(100.0*charge/capacity, 0.1),
+		"capacityPercent" = round(100*charge/capacity, 0.1),
 		"capacity" = capacity,
 		"charge" = charge,
 
@@ -345,82 +350,10 @@
 		"outputLevelMax" = output_level_max,
 		"outputUsed" = output_used
 	)
-
-	// update the ui if it exists, returns null if no ui is passed/found
-	ui = SSnano.try_update_ui(user, src, ui_key, ui, data)
-	if (!ui)
-		// the ui does not exist, so we'll create a new() one
-		// for a list of parameters and their descriptions see the code docs in \code\modules\nano\nanoui.dm
-		ui = new(user, src, ui_key, "smes.tmpl", "SMES - [name]", 350, 560)
-		// when the ui is first opened this is the data it will use
-		ui.set_initial_data(data)
-		// open the new ui window
-		ui.open()
-		// auto update every Master Controller tick
-		ui.set_auto_update(1)
-
-/obj/machinery/power/smes/Topic(href, href_list)
-//	world << "[href] ; [href_list[href]]"
-
-	if(..())
-		return
+	return data
 
 
-	else if( href_list["input_attempt"] )
-		input_attempt = text2num(href_list["input_attempt"])
-		if(!input_attempt)
-			inputting = 0
-		log_smes(usr.ckey)
-		update_icon()
 
-	else if( href_list["output_attempt"] )
-		output_attempt = text2num(href_list["output_attempt"])
-		if(!output_attempt)
-			outputting = 0
-		log_smes(usr.ckey)
-		update_icon()
-
-	else if( href_list["set_input_level"] )
-		switch(href_list["set_input_level"])
-			if("max")
-				input_level = input_level_max
-			if("custom")
-				var/custom = input(usr, "What rate would you like this SMES to attempt to charge at? Max is [input_level_max].") as null|num
-				if(isnum(custom))
-					href_list["set_input_level"] = custom
-					.()
-			if("plus")
-				input_level += 10000
-			if("minus")
-				input_level -= 10000
-			else
-				var/n = text2num(href_list["set_input_level"])
-				if(isnum(n))
-					input_level = n
-
-		input_level = Clamp(input_level, 0, input_level_max)
-		log_smes(usr.ckey)
-
-	else if(href_list["set_output_level"])
-		switch(href_list["set_output_level"])
-			if("max")
-				output_level = output_level_max
-			if("custom")
-				var/custom = input(usr, "What rate would you like this SMES to attempt to output at? Max is [output_level_max].") as null|num
-				if(isnum(custom))
-					href_list["set_output_level"] = custom
-					.()
-			if("plus")
-				output_level += 10000
-			if("minus")
-				output_level -= 10000
-			else
-				var/n = text2num(href_list["set_output_level"])
-				if(isnum(n))
-					output_level = n
-
-		output_level = Clamp(output_level, 0, output_level_max)
-		log_smes(usr.ckey)
 
 /obj/machinery/power/smes/proc/log_smes(var/user = "")
 	investigate_log("input/output; [input_level>output_level?"<font color='green'>":"<font color='red'>"][input_level]/[output_level]</font> | Charge: [charge] | Output-mode: [output_attempt?"<font color='green'>on</font>":"<font color='red'>off</font>"] | Input-mode: [input_attempt?"<font color='green'>auto</font>":"<font color='red'>off</font>"] by [user]","singulo")

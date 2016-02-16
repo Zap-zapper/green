@@ -112,3 +112,7 @@
 // Atmos pipe limits
 #define MAX_OUTPUT_PRESSURE					4500 // (kPa) What pressure pumps and powered equipment max out at.
 #define MAX_TRANSFER_RATE					200 // (L/s) Maximum speed powered equipment can work at.
+
+#define TANK_MAX_RELEASE_PRESSURE (ONE_ATMOSPHERE*3)
+#define TANK_MIN_RELEASE_PRESSURE 0
+#define TANK_DEFAULT_RELEASE_PRESSURE 16

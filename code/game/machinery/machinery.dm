@@ -201,12 +201,12 @@ Class Procs:
 		use_power(active_power_usage,power_channel)
 	return 1
 
-/obj/machinery/Topic(href, href_list)
-	..()
-	if(!can_be_used_by(usr))
-		return 1
-	add_fingerprint(usr)
-	return 0
+/obj/machinery/proc/is_interactable()
+	if((stat & (NOPOWER|BROKEN)) && !interact_offline)
+		return FALSE
+	if(panel_open && !interact_open)
+		return FALSE
+	return TRUE
 
 /obj/machinery/proc/can_be_used_by(mob/user)
 	if(!interact_offline && stat & (NOPOWER|BROKEN))
@@ -217,6 +217,38 @@ Class Procs:
 
 /obj/machinery/proc/is_operational()
 	return !(stat & (NOPOWER|BROKEN|MAINT))
+
+
+/obj/machinery/proc/is_interactable()
+	if((stat & (NOPOWER|BROKEN)) && !interact_offline)
+		return FALSE
+	if(panel_open && !interact_open)
+		return FALSE
+	return TRUE
+
+////////////////////////////////////////////////////////////////////////////////////////////
+
+/obj/machinery/interact(mob/user)
+	add_fingerprint(user)
+	ui_interact(user)
+
+/obj/machinery/ui_status(mob/user)
+	if(is_interactable())
+		return ..()
+	return UI_CLOSE
+
+/obj/machinery/ui_act(action, params)
+	add_fingerprint(usr)
+	return ..()
+
+/obj/machinery/Topic(href, href_list)
+	..()
+	if(!is_interactable())
+		return 1
+	if(!usr.canUseTopic(src))
+		return 1
+	add_fingerprint(usr)
+	return 0
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -309,6 +341,7 @@ Class Procs:
 	src.add_fingerprint(user)
 	if(set_machine)
 		user.set_machine(src)
+	interact(user)
 	return 0
 
 /obj/machinery/CheckParts()
