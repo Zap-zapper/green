@@ -1,7 +1,7 @@
-var/avatarcreated=0		//Был ли уже создан Аватар?
-var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой основан аватар, его абилки, и всё-всё-всё.
+var/avatarcreated=0		//ГЃГ»Г« Г«ГЁ ГіГ¦ГҐ Г±Г®Г§Г¤Г Г­ ГЂГўГ ГІГ Г°?
+var/mob/living/simple_animal/avatar/demon		//ГѓГ«Г ГўГ­Г Гї ГЇГҐГ°ГҐГ¬ГҐГ­Г­Г Гї, Г­Г  ГЄГ®ГІГ®Г°Г®Г© Г®Г±Г­Г®ГўГ Г­ Г ГўГ ГІГ Г°, ГҐГЈГ® Г ГЎГЁГ«ГЄГЁ, ГЁ ГўГ±Вё-ГўГ±Вё-ГўГ±Вё.
 
-/proc/messagevictimcheck(mob/living/P as mob)		//Проверка на цель с сообщением
+/proc/messagevictimcheck(mob/living/P as mob)		//ГЏГ°Г®ГўГҐГ°ГЄГ  Г­Г  Г¶ГҐГ«Гј Г± Г±Г®Г®ГЎГ№ГҐГ­ГЁГҐГ¬
 	if(iscultist(P) || ("cult" in P.faction) || ("faithless" in P.faction))
 		demon << "\red My followers do not deserve this!"
 		return 0
@@ -13,7 +13,7 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 		return 0
 	return 1
 
-/proc/victimcheck(mob/living/M as mob)		//Проверка на цель без сообщений
+/proc/victimcheck(mob/living/M as mob)		//ГЏГ°Г®ГўГҐГ°ГЄГ  Г­Г  Г¶ГҐГ«Гј ГЎГҐГ§ Г±Г®Г®ГЎГ№ГҐГ­ГЁГ©
 	return !((M.check_contents_for(/obj/item/weapon/nullrod)) || (iscultist(M)) || (demon==M) || ("cult" in M.faction) || ("faithless" in M.faction))
 
 /mob/living/simple_animal/avatar
@@ -21,15 +21,15 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 	desc = "Human, which Nar-Sie uses as vessel, to contain Her great power..."
 	icon = 'icons/mob/demon.dmi'
 	icon_state = "daemon"
-	verb_say = "рычит"
+	verb_say = "Г°Г»Г·ГЁГІ"
 	verb_engsay = "snarls"
-	verb_ask = "рычит"
-	verb_exclaim = "ревёт"
-	verb_yell = "ревёт"
+	verb_ask = "Г°Г»Г·ГЁГІ"
+	verb_exclaim = "Г°ГҐГўВёГІ"
+	verb_yell = "Г°ГҐГўВёГІ"
 	wander = 0
 	see_in_dark = 8
 	environment_smash = 3
-	mob_size = MOB_SIZE_LARGE		//Чтобы в шкафчике не заварили
+	mob_size = MOB_SIZE_LARGE		//Г—ГІГ®ГЎГ» Гў ГёГЄГ ГґГ·ГЁГЄГҐ Г­ГҐ Г§Г ГўГ Г°ГЁГ«ГЁ
 	a_intent = "harm"
 	response_help = "touches"
 	response_disarm = "tries to push"
@@ -37,7 +37,7 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 	maxHealth = 400
 	health = 400
 	speed=5
-	status_flags = 0		//Нельзя толкнуть
+	status_flags = 0		//ГЌГҐГ«ГјГ§Гї ГІГ®Г«ГЄГ­ГіГІГј
 	harm_intent_damage = 5
 	force_threshold = 10
 	melee_damage_lower = 30
@@ -45,33 +45,33 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 	attacktext = "smashes"
 	attack_sound = 'sound/effects/heavyhit.ogg'
 	minbodytemp = 0
-	maxbodytemp = INFINITY		//Пофиг на атмос. Возможно стоит убрать, ибо почему бы не дать возможность его зажарить/космировать?
+	maxbodytemp = INFINITY		//ГЏГ®ГґГЁГЈ Г­Г  Г ГІГ¬Г®Г±. Г‚Г®Г§Г¬Г®Г¦Г­Г® Г±ГІГ®ГЁГІ ГіГЎГ°Г ГІГј, ГЁГЎГ® ГЇГ®Г·ГҐГ¬Гі ГЎГ» Г­ГҐ Г¤Г ГІГј ГўГ®Г§Г¬Г®Г¦Г­Г®Г±ГІГј ГҐГЈГ® Г§Г Г¦Г Г°ГЁГІГј/ГЄГ®Г±Г¬ГЁГ°Г®ГўГ ГІГј?
 	atmos_requirements = list("min_oxy" = 0, "max_oxy" = 0, "min_tox" = 0, "max_tox" = 0, "min_co2" = 0, "max_co2" = 0, "min_n2" = 0, "max_n2" = 0)
-	faction = list("faithless","cult")		//Чтобы его ногами не запинали его же собственные демоны
-	var/stepsound=0		//Сколько шагов до звука?
-	var/enraged=0		//В ярости?
-	var/victim=null		//Жертва под воздействием Doom. Нужна для того чтобы проклятье можно было скинуть ударив библией, а так же определить есть ли она вообще в мире
+	faction = list("faithless","cult")		//Г—ГІГ®ГЎГ» ГҐГЈГ® Г­Г®ГЈГ Г¬ГЁ Г­ГҐ Г§Г ГЇГЁГ­Г Г«ГЁ ГҐГЈГ® Г¦ГҐ Г±Г®ГЎГ±ГІГўГҐГ­Г­Г»ГҐ Г¤ГҐГ¬Г®Г­Г»
+	var/stepsound=0		//Г‘ГЄГ®Г«ГјГЄГ® ГёГ ГЈГ®Гў Г¤Г® Г§ГўГіГЄГ ?
+	var/enraged=0		//Г‚ ГїГ°Г®Г±ГІГЁ?
+	var/victim=null		//Г†ГҐГ°ГІГўГ  ГЇГ®Г¤ ГўГ®Г§Г¤ГҐГ©Г±ГІГўГЁГҐГ¬ Doom. ГЌГіГ¦Г­Г  Г¤Г«Гї ГІГ®ГЈГ® Г·ГІГ®ГЎГ» ГЇГ°Г®ГЄГ«ГїГІГјГҐ Г¬Г®Г¦Г­Г® ГЎГ»Г«Г® Г±ГЄГЁГ­ГіГІГј ГіГ¤Г Г°ГЁГў ГЎГЁГЎГ«ГЁГҐГ©, Г  ГІГ ГЄ Г¦ГҐ Г®ГЇГ°ГҐГ¤ГҐГ«ГЁГІГј ГҐГ±ГІГј Г«ГЁ Г®Г­Г  ГўГ®Г®ГЎГ№ГҐ Гў Г¬ГЁГ°ГҐ
 	var/hunger=200		//Need...moar...souls
-	var/summoned_during_cult=0		//Его призвали во время культа?
-	var/attack_cooldown=2		//Кулдаун атаки
+	var/summoned_during_cult=0		//Г…ГЈГ® ГЇГ°ГЁГ§ГўГ Г«ГЁ ГўГ® ГўГ°ГҐГ¬Гї ГЄГіГ«ГјГІГ ?
+	var/attack_cooldown=2		//ГЉГіГ«Г¤Г ГіГ­ Г ГІГ ГЄГЁ
 
 
 
-//////////////////////// ГЛАВНЫЕ ПРОКИ ////////////////////////
+//////////////////////// ГѓГ‹ГЂГ‚ГЌГ›Г… ГЏГђГЋГЉГ€ ////////////////////////
 
 
 
 	New()
 		..()
-		if (avatarcreated || demon)		//Есть только один Аватар.
+		if (avatarcreated || demon)		//Г…Г±ГІГј ГІГ®Г«ГјГЄГ® Г®Г¤ГЁГ­ ГЂГўГ ГІГ Г°.
 			spawn(1)		message_admins("There can be only one Avatar in the world")
 			qdel(src)
 
 		demon=src
-		avatarcreated = 1		//Переменную нельзя установить на 0 без педальвмешательства. Если аватар соснул, то нового не сделать.
+		avatarcreated = 1		//ГЏГҐГ°ГҐГ¬ГҐГ­Г­ГіГѕ Г­ГҐГ«ГјГ§Гї ГіГ±ГІГ Г­Г®ГўГЁГІГј Г­Г  0 ГЎГҐГ§ ГЇГҐГ¤Г Г«ГјГўГ¬ГҐГёГ ГІГҐГ«ГјГ±ГІГўГ . Г…Г±Г«ГЁ Г ГўГ ГІГ Г° Г±Г®Г±Г­ГіГ«, ГІГ® Г­Г®ГўГ®ГЈГ® Г­ГҐ Г±Г¤ГҐГ«Г ГІГј.
 		if(ticker.mode.name == "cult")		summoned_during_cult=1
 
-		var/matrix/M = matrix()		//Увеличить спрайт Аватара. Это делает его мыльным, но тут уже выбор - либо карликовый но нормальный, либо нормальный, но мыльный.
+		var/matrix/M = matrix()		//Г“ГўГҐГ«ГЁГ·ГЁГІГј Г±ГЇГ°Г Г©ГІ ГЂГўГ ГІГ Г°Г . ГќГІГ® Г¤ГҐГ«Г ГҐГІ ГҐГЈГ® Г¬Г»Г«ГјГ­Г»Г¬, Г­Г® ГІГіГІ ГіГ¦ГҐ ГўГ»ГЎГ®Г° - Г«ГЁГЎГ® ГЄГ Г°Г«ГЁГЄГ®ГўГ»Г© Г­Г® Г­Г®Г°Г¬Г Г«ГјГ­Г»Г©, Г«ГЁГЎГ® Г­Г®Г°Г¬Г Г«ГјГ­Г»Г©, Г­Г® Г¬Г»Г«ГјГ­Г»Г©.
 		M.Scale(1.25)
 		M.Translate(0,5)
 		src.transform = M
@@ -83,10 +83,10 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 		if(!iscultist(src) && summoned_during_cult && mind)
 			ticker.mode.add_cultist(src.mind)
 			src.mind.special_role = "Cultist"
-			src.mind.current.verbs -= /mob/living/proc/cult_innate_comm		//Ему это не нужно
+			src.mind.current.verbs -= /mob/living/proc/cult_innate_comm		//Г…Г¬Гі ГЅГІГ® Г­ГҐ Г­ГіГ¦Г­Г®
 
 		spawn(1)
-			if(!src.giveSpells())		//Нагло украдено у ревенанта
+			if(!src.giveSpells())		//ГЌГ ГЈГ«Г® ГіГЄГ°Г Г¤ГҐГ­Г® Гі Г°ГҐГўГҐГ­Г Г­ГІГ 
 				message_admins("Avatar was created but has no mind. Trying again in ten seconds.")
 				spawn(100)
 					if(!src.giveSpells())
@@ -94,7 +94,7 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 						qdel(src)
 
 
-	Stat()		//Cтат-панелька с временем и голодом
+	Stat()		//CГІГ ГІ-ГЇГ Г­ГҐГ«ГјГЄГ  Г± ГўГ°ГҐГ¬ГҐГ­ГҐГ¬ ГЁ ГЈГ®Г«Г®Г¤Г®Г¬
 		..()
 		stat(null, "Hunger: [src.hunger]/200")
 		if(ticker.mode.name == "cult")
@@ -116,14 +116,14 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 		P.adjustFireLoss(rand(300,600))
 		P.key=src.key
 		ghostize()
-		qdel(src)		//Аватара нет
+		qdel(src)		//ГЂГўГ ГІГ Г°Г  Г­ГҐГІ
 
 	Life()
 		..()
 		for(var/obj/mecha/machine in view(src.loc,3))
 			if(machine && machine.occupant)		machine.occupant.adjustCloneLoss(5)
 
-		for(var/mob/living/M in view(src.loc,3))		//Его аура
+		for(var/mob/living/M in view(src.loc,3))		//Г…ГЈГ® Г ГіГ°Г 
 			if(M)
 				if(victimcheck(M))
 					var/rast = get_dist(M,src)
@@ -138,7 +138,7 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 								M.emp_act(1)
 
 
-		if(health <=200 && enraged==0)		//Ярость
+		if(health <=200 && enraged==0)		//ГџГ°Г®Г±ГІГј
 			visible_message("<span class='danger'><FONT size=2>[src] body starts glowing with the piercing red light...</span></FONT>")
 			icon_state = "enrage"
 			force_threshold = 0
@@ -148,18 +148,18 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 		if(attack_cooldown>0)		--attack_cooldown
 
 		if(hunger>1)		--hunger
-		else if(hunger==1)		//Дай пожрать
+		else if(hunger==1)		//Г„Г Г© ГЇГ®Г¦Г°Г ГІГј
 			src << "\red Uuugh...I am losing power...I need...souls"
 			--hunger
 		else		demon.adjustBruteLoss(2)
 
 
 
-//////////////////////// АБИЛКИ ////////////////////////
+//////////////////////// ГЂГЃГ€Г‹ГЉГ€ ////////////////////////
 
 
 
-/mob/living/simple_animal/avatar/proc/giveSpells()		//Прок, который выдаёт ему абилки. Нагло украдено у Ревенанта.
+/mob/living/simple_animal/avatar/proc/giveSpells()		//ГЏГ°Г®ГЄ, ГЄГ®ГІГ®Г°Г»Г© ГўГ»Г¤Г ВёГІ ГҐГ¬Гі Г ГЎГЁГ«ГЄГЁ. ГЌГ ГЈГ«Г® ГіГЄГ°Г Г¤ГҐГ­Г® Гі ГђГҐГўГҐГ­Г Г­ГІГ .
 	if(src.mind)
 		src.mind.spell_list += new /obj/effect/proc_holder/spell/targeted/soul_absorb
 		src.mind.spell_list += new /obj/effect/proc_holder/spell/targeted/evilwhisper
@@ -265,7 +265,7 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 
 
 
-//////////////////////// КАСТ ////////////////////////
+//////////////////////// ГЉГЂГ‘Г’ ////////////////////////
 
 
 //// Soul Absorb
@@ -275,7 +275,7 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 	for(var/mob/living/carbon/Q in targets)
 		spawn(0)
 			if(!Q)		return
-			if(!Q.ckey && !Q.get_ghost())		//Ворваться в генетику, пережрать макак и победить? Неm.
+			if(!Q.ckey && !Q.get_ghost())		//Г‚Г®Г°ГўГ ГІГјГ±Гї Гў ГЈГҐГ­ГҐГІГЁГЄГі, ГЇГҐГ°ГҐГ¦Г°Г ГІГј Г¬Г ГЄГ ГЄ ГЁ ГЇГ®ГЎГҐГ¤ГЁГІГј? ГЌГҐm.
 				demon << "\red THERE IS NO SOUL IN THIS CREATURE! OR IT IS JUST TOO WEAK TO SATISFY MY MASTER!"
 				return
 			if(!messagevictimcheck(Q))		return
@@ -293,26 +293,26 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 			demon.visible_message("<span class='danger'>[demon] saps the last of essence out of [Q]'s body, turning it into a pile of bones!</span>")
 			Q.dust()
 			if(demon.summoned_during_cult)		for(var/datum/game_mode/cult/satan)		satan.reality_integrity-=30
-			demon.adjustBruteLoss(-50)		//Отнять время от отсчёта, похилить аватара и сделать его менее голодным.
+			demon.adjustBruteLoss(-50)		//ГЋГІГ­ГїГІГј ГўГ°ГҐГ¬Гї Г®ГІ Г®ГІГ±Г·ВёГІГ , ГЇГ®ГµГЁГ«ГЁГІГј Г ГўГ ГІГ Г°Г  ГЁ Г±Г¤ГҐГ«Г ГІГј ГҐГЈГ® Г¬ГҐГ­ГҐГҐ ГЈГ®Г«Г®Г¤Г­Г»Г¬.
 			demon.hunger=200
 
 
 //// Summon Daemons
 
 
-/obj/effect/proc_holder/spell/aoe_turf/summon_daemons/cast(list/targets)		//Conjure - дерьмо.
+/obj/effect/proc_holder/spell/aoe_turf/summon_daemons/cast(list/targets)		//Conjure - Г¤ГҐГ°ГјГ¬Г®.
 	var/list/faithlesses= list()
-	var/time=300		//Время сколько они существуют
+	var/time=300		//Г‚Г°ГҐГ¬Гї Г±ГЄГ®Г«ГјГЄГ® Г®Г­ГЁ Г±ГіГ№ГҐГ±ГІГўГіГѕГІ
 	if(demon.enraged)		time=150
 
 	for(var/turf/target_tile in targets)
 		if(!target_tile)		return
-		for(var/mob/living/M in target_tile.contents)		//Пихнуть назад тех, кто рядом
+		for(var/mob/living/M in target_tile.contents)		//ГЏГЁГµГ­ГіГІГј Г­Г Г§Г Г¤ ГІГҐГµ, ГЄГІГ® Г°ГїГ¤Г®Г¬
 			if(M!=demon)
 				M << "\red You was pushed away by appearing figures!"
 				step_away(M,demon)
 				M.Weaken(2)
-		if(!istype(target_tile,/turf/space) && !(is_blocked_turf(target_tile)))		//Если в ярости, то восемь демонов появятся вокруг. Если нет, то четыре, слева,справа, спереди и сзади.
+		if(!istype(target_tile,/turf/space) && !(is_blocked_turf(target_tile)))		//Г…Г±Г«ГЁ Гў ГїГ°Г®Г±ГІГЁ, ГІГ® ГўГ®Г±ГҐГ¬Гј Г¤ГҐГ¬Г®Г­Г®Гў ГЇГ®ГїГўГїГІГ±Гї ГўГ®ГЄГ°ГіГЈ. Г…Г±Г«ГЁ Г­ГҐГІ, ГІГ® Г·ГҐГІГ»Г°ГҐ, Г±Г«ГҐГўГ ,Г±ГЇГ°Г ГўГ , Г±ГЇГҐГ°ГҐГ¤ГЁ ГЁ Г±Г§Г Г¤ГЁ.
 			if((!demon.enraged && (target_tile.x==demon.x || target_tile.y==demon.y)) || (demon.enraged))
 				faithlesses += new /mob/living/simple_animal/hostile/faithless(target_tile)
 
@@ -336,7 +336,7 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 			revert_cast(usr)
 			return
 
-		demon.say("COGNOSCE DOLOR")		//Если ебанёт не того - всё равно на кулдаун
+		demon.say("COGNOSCE DOLOR")		//Г…Г±Г«ГЁ ГҐГЎГ Г­ВёГІ Г­ГҐ ГІГ®ГЈГ® - ГўГ±Вё Г°Г ГўГ­Г® Г­Г  ГЄГіГ«Г¤Г ГіГ­
 		if(messagevictimcheck(T))
 			T << "\red <FONT size=5>AAAAAAAAGGHHH!!!!</FONT>"
 			T.AdjustParalysis(10)
@@ -352,7 +352,7 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 
 /obj/effect/proc_holder/spell/targeted/inflict_handler/harpoon
 	amt_weakened = 4
-	amt_dam_brute = 25		//Попадание гарпуном валит с ног и наносит 25 брута
+	amt_dam_brute = 25		//ГЏГ®ГЇГ Г¤Г Г­ГЁГҐ ГЈГ Г°ГЇГіГ­Г®Г¬ ГўГ Г«ГЁГІ Г± Г­Г®ГЈ ГЁ Г­Г Г­Г®Г±ГЁГІ 25 ГЎГ°ГіГІГ 
 
 /obj/effect/proc_holder/spell/targeted/inflict_handler/harpoon/cast(list/targets)
 	..()
@@ -363,7 +363,7 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 			if(jertva.buckled)		jertva.buckled.unbuckle_mob()
 			while(get_dist(demon,jertva)>1 && i<=10)
 				++i
-				jertva.loc=get_step_towards(jertva,demon)		//Чтобы через столы пролетала. Если между ними окажется стена, то это тип тёмная сила, мистика, короч не баг а фича
+				jertva.loc=get_step_towards(jertva,demon)		//Г—ГІГ®ГЎГ» Г·ГҐГ°ГҐГ§ Г±ГІГ®Г«Г» ГЇГ°Г®Г«ГҐГІГ Г«Г . Г…Г±Г«ГЁ Г¬ГҐГ¦Г¤Гі Г­ГЁГ¬ГЁ Г®ГЄГ Г¦ГҐГІГ±Гї Г±ГІГҐГ­Г , ГІГ® ГЅГІГ® ГІГЁГЇ ГІВёГ¬Г­Г Гї Г±ГЁГ«Г , Г¬ГЁГ±ГІГЁГЄГ , ГЄГ®Г°Г®Г· Г­ГҐ ГЎГ ГЈ Г  ГґГЁГ·Г 
 				sleep(2)
 
 
@@ -374,7 +374,7 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 	var/z=demon.health
 	demon.visible_message("\red \bold [demon] starts glowing with the crimson light!")
 	demon.canmove=0
-	demon.stunned += 4		//Обездвижить
+	demon.stunned += 4		//ГЋГЎГҐГ§Г¤ГўГЁГ¦ГЁГІГј
 	spawn(0)
 		for(var/i=1+2*demon.enraged,i<=10,++i)
 			if(demon.health<(z-40))
@@ -396,7 +396,7 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 			for(var/mob/living/K in T.contents)
 				if(!K)		return
 				if(!victimcheck(K))		continue
-				if(istype(K,/mob/living/silicon))		//Борготу туда же
+				if(istype(K,/mob/living/silicon))		//ГЃГ®Г°ГЈГ®ГІГі ГІГіГ¤Г  Г¦ГҐ
 					if(get_dist(demon,K) <= 3)		K.emp_act(1)
 					else		K.emp_act(2)
 					K.adjustBruteLoss(80-10*get_dist(demon,K))
@@ -419,13 +419,13 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 					meh.ex_act(2)
 					meh.emp_act(2)
 
-			for(var/obj/structure/window/W in T.contents)		if(prob(33))		W.spawnfragments()		//Риск лагалища, поэтому тут шанс всегда 1/3
+			for(var/obj/structure/window/W in T.contents)		if(prob(33))		W.spawnfragments()		//ГђГЁГ±ГЄ Г«Г ГЈГ Г«ГЁГ№Г , ГЇГ®ГЅГІГ®Г¬Гі ГІГіГІ ГёГ Г­Г± ГўГ±ГҐГЈГ¤Г  1/3
 
 
 //// Doom
 
 
-/mob/living/proc/Doom(var/countdown = 60)		//Через отдельный прок
+/mob/living/proc/Doom(var/countdown = 60)		//Г—ГҐГ°ГҐГ§ Г®ГІГ¤ГҐГ«ГјГ­Г»Г© ГЇГ°Г®ГЄ
 	if(demon)		demon.victim=src
 	if(!src.ckey || src.stat==2)
 		demon.victim=null
@@ -440,7 +440,7 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 				return
 
 			--countdown
-			switch(countdown)		//Библейский стишок. Возможно не самое эпичное или подходящее, но по мне норм.
+			switch(countdown)		//ГЃГЁГЎГ«ГҐГ©Г±ГЄГЁГ© Г±ГІГЁГёГ®ГЄ. Г‚Г®Г§Г¬Г®Г¦Г­Г® Г­ГҐ Г±Г Г¬Г®ГҐ ГЅГЇГЁГ·Г­Г®ГҐ ГЁГ«ГЁ ГЇГ®Г¤ГµГ®Г¤ГїГ№ГҐГҐ, Г­Г® ГЇГ® Г¬Г­ГҐ Г­Г®Г°Г¬.
 				if(34)		src << "<font color=\"purple\"><i>Disaster after disaster</i></font>"
 				if(32)		src << "<font color=\"purple\"><i>   is coming your way!</i></font>"
 				if(30)		src << "<font color=\"purple\"><i>The end has come</i></font>"
@@ -459,7 +459,7 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 				if(4)		src << "<font color=\"purple\"><i>Then you will know that it is I...</i></font>"
 				if(1)		src << "<font color=\"purple\"><i><b>  The Lord, who is striking the blow</b></i></font>"
 				if(-INFINITY to 0)
-					for(var/mob/living/K in oview(5, src))		//Прыжок на случайную цель рядом
+					for(var/mob/living/K in oview(5, src))		//ГЏГ°Г»Г¦Г®ГЄ Г­Г  Г±Г«ГіГ·Г Г©Г­ГіГѕ Г¶ГҐГ«Гј Г°ГїГ¤Г®Г¬
 						if(!victimcheck(K) || istype(K,/mob/living/silicon) || !K.ckey)		continue
 						var/list/jertvi=list()
 						jertvi+=K
@@ -517,14 +517,14 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 	for(var/turf/simulated/T in range(demon,7))
 		if(!T)		return
 		if(get_dist(T,stone)==7)
-			var/obj/effect/forcefield/flames = new /obj/effect/forcefield(T)		//Никто ничего не заподозрит...
+			var/obj/effect/forcefield/flames = new /obj/effect/forcefield(T)		//ГЌГЁГЄГІГ® Г­ГЁГ·ГҐГЈГ® Г­ГҐ Г§Г ГЇГ®Г¤Г®Г§Г°ГЁГІ...
 			flames.name= "hotspot"
 			flames.icon= 'icons/effects/fire.dmi'
 			flames.icon_state="3"
 			flames.opacity=1
 			flames.luminosity = 5
 			walls+=flames
-		else		T.color="#383838"		//Всё что внутри станет чёрным
+		else		T.color="#383838"		//Г‚Г±Вё Г·ГІГ® ГўГ­ГіГІГ°ГЁ Г±ГІГ Г­ГҐГІ Г·ВёГ°Г­Г»Г¬
 
 		for(var/mob/living/M in T.contents)
 			if(get_dist(T,stone)==7)
@@ -602,16 +602,15 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 				usr << "\blue You project [text] into the mind of all living creatures"
 			if("Servants")
 				if(!text)		return
-				for(var/mob/M in player_list)
-					if(iscultist(M) || (M in dead_mob_list) || istype(M,/mob/living/simple_animal/construct) || M==demon)		M << "\bold \italic <font color=\"purple\">MASTER: [text]</font>"
+				for(var/mob/M in player_list)		if(iscultist(M) || (M in dead_mob_list) || istype(M,/mob/living/simple_animal/construct) || M==demon)		M << "\bold \italic <font color=\"purple\">MASTER: [text]</font>"
 
 
 
-//////////////////////// ЭКС И БУЛЛЕТ АКТ ////////////////////////
+//////////////////////// ГќГЉГ‘ Г€ ГЃГ“Г‹Г‹Г…Г’ ГЂГЉГ’ ////////////////////////
 
 
 
-/mob/living/simple_animal/avatar/ex_act(severity)		//Ну ебануть одной лимиткой, ну весь фан же нахуй, ну.
+/mob/living/simple_animal/avatar/ex_act(severity)		//ГЌГі ГҐГЎГ Г­ГіГІГј Г®Г¤Г­Г®Г© Г«ГЁГ¬ГЁГІГЄГ®Г©, Г­Гі ГўГҐГ±Гј ГґГ Г­ Г¦ГҐ Г­Г ГµГіГ©, Г­Гі.
 	if(1)		adjustBruteLoss(200)
 	else if(2)		adjustBruteLoss(100)
 	else if(3)		visible_message("\red [src] shrugged off the explosion!")
@@ -641,7 +640,7 @@ var/mob/living/simple_animal/avatar/demon		//Главная переменная, на которой осно
 
 
 
-//////////////////////// УДАР С РУКИ ////////////////////////
+//////////////////////// Г“Г„ГЂГђ Г‘ ГђГ“ГЉГ€ ////////////////////////
 
 
 
